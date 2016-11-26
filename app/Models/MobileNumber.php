@@ -3,11 +3,12 @@
 namespace UHacWeb\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use UHacWeb\Models\Mixins\VerifyMobileNumber;
 
 class MobileNumber extends Model
 {
-    use VerifyMobileNumber;
+    use Notifiable, VerifyMobileNumber;
 
     protected $fillable = [
         'mobile_number',

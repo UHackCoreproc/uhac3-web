@@ -7,6 +7,7 @@ use Illuminate\Support\MessageBag;
 use UHacWeb\Http\Controllers\Api\ApiController;
 use UHacWeb\Http\Requests\StoreMobileNumberRequest;
 use UHacWeb\Models\MobileNumber;
+use UHacWeb\Notifications\SendVerificationCode;
 use UHacWeb\Transformers\MobileNumberTransformer;
 use Validator;
 
@@ -32,7 +33,7 @@ class MobileNumbersController extends ApiController
 
         $mobileNumber->save();
 
-        // TODO: Send mobile code
+        $mobileNumber->notify(new SendVerificationCode);
 
         return $this->response->withItem($mobileNumber, new MobileNumberTransformer);
     }

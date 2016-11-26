@@ -11,7 +11,9 @@ trait VerifyMobileNumber
         });
 
         static::updating(function ($model) {
-            $model->verification_code = $model->generateCode();
+            if ( ! $model->user_id) {
+                $model->verification_code = $model->generateCode();
+            }
         });
     }
 

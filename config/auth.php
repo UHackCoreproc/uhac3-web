@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => UHacWeb\User::class,
+            'model' => UHacWeb\Models\User::class,
         ],
 
         // 'users' => [

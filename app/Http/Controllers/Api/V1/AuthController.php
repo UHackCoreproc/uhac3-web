@@ -79,6 +79,10 @@ class AuthController extends ApiController
             'country_id' => isset($country->id) ? $country->id : null
         ]);
 
+        if ($request->hasFile('image')) {
+            $user->saveAvatar($request->file('image'), 'avatars');
+        }
+
         $user->default_address_id = $address->id;
         $user->save();
 

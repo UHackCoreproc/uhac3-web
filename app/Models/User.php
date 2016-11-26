@@ -2,12 +2,14 @@
 
 namespace UHacWeb\Models;
 
+use Gravatar;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use UHacWeb\Models\Mixins\HasAvatar;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasAvatar, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +47,15 @@ class User extends Authenticatable
     public function defaultAddress()
     {
         return $this->hasOne(Address::class, 'id', 'default_address_id');
+    }
+
+    public function getAvatarUrl()
+    {
+        if (empty($this->avatar)) {
+            return Gravatar::get($this->email);
+        }
+
+        return $this->avatar->url();
     }
 
     public function mobileNumber()

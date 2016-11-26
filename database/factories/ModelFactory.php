@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(UHacWeb\User::class, function (Faker\Generator $faker) {
+$factory->define(UHacWeb\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [

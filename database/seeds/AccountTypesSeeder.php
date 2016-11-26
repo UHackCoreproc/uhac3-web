@@ -15,7 +15,7 @@ class AccountTypesSeeder extends Seeder
         $accountTypes = [
             'Bank Account',
             'Debit / Credit Card',
-            'PayPal'
+            'Code Redemption'
         ];
 
         foreach ($accountTypes as $accountType) {

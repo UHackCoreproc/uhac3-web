@@ -23,7 +23,9 @@ class PaymayaProcessor {
 
         try {
             $response = $client->post(config('ggpay.apis.paymaya.base_url') . '/customers', [
-                'auth' => [config('ggpay.apis.paymaya.secret'), ''],
+                'headers' => [
+                    'Authorization' => 'Basic ' . config('ggpay.apis.paymaya.secret')
+                ],
                 'json' => [
                     'firstName'      => $user->first_name,
                     'middleName'     => '',
@@ -79,7 +81,9 @@ class PaymayaProcessor {
 
         try {
             $response = $client->post(config('ggpay.apis.paymaya.base_url') . '/payment-tokens', [
-                'auth' => [config('ggpay.apis.paymaya.public'), ''],
+                'headers' => [
+                    'Authorization' => 'Basic ' . config('ggpay.apis.paymaya.public')
+                ],
                 'json' => [
                     'card' => [
                         'number'   => $credit_card_number,
@@ -121,7 +125,9 @@ class PaymayaProcessor {
 
         try {
             $response = $client->post(config('ggpay.apis.paymaya.base_url') . '/customers/' . $customer_id . '/cards', [
-                'auth' => [config('ggpay.apis.paymaya.secret'), ''],
+                'headers' => [
+                    'Authorization' => 'Basic ' . config('ggpay.apis.paymaya.secret')
+                ],
                 'json' => [
                     'paymentTokenId' => $token,
                     'isDefault'      => true,
@@ -141,7 +147,7 @@ class PaymayaProcessor {
         }
 
         return [
-            'token'           => $r->cardTokenId,
+            'cardId'          => $r->cardTokenId,
             'verificationUrl' => $r->verificationUrl,
             'cardType'        => $r->cardType,
             'masked'          => $r->maskedPan,
@@ -161,7 +167,9 @@ class PaymayaProcessor {
 
         try {
             $response = $client->post(config('ggpay.apis.paymaya.base_url') . '/customers/' . $customer_id . '/cards/' . $card_id . '/payments', [
-                'auth' => [config('ggpay.apis.paymaya.secret'), ''],
+                'headers' => [
+                    'Authorization' => 'Basic ' . config('ggpay.apis.paymaya.secret')
+                ],
                 'json' => [
                     'totalAmount' => [
                         'amount'   => $amount,

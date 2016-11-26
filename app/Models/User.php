@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(MobileNumber::class);
     }
+
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }

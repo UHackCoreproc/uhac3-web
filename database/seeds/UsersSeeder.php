@@ -15,30 +15,51 @@ class UsersSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'John Eris Villanueva',
+                'first_name' => 'John Eris',
+                'last_name' => 'Villanueva',
                 'email' => 'johneris.villanueva@coreproc.ph',
+                'mobile_number' => '09753966346'
             ],
             [
-                'name' => 'Mark Jayson Fuentes',
-                'email' => 'markjayson.fuentes@coreproc.ph'
+                'first_name' => 'Mark Jayson',
+                'last_name' => 'Fuentes',
+                'email' => 'markjayson.fuentes@coreproc.ph',
+                'mobile_number' => '09178436703'
             ],
             [
-                'name' => 'Ivan Bergonia',
-                'email' => 'ivan.bergonia@coreproc.ph'
+                'first_name' => 'Ivan',
+                'last_name' => 'Bergonia',
+                'email' => 'ivan.bergonia@coreproc.ph',
+                'mobile_number' => '09363036428'
             ],
             [
-                'name' => 'UHac Test User',
-                'email' => 'uhac@coreproc.ph'
+                'first_name' => 'UHac',
+                'last_name' => 'Test User',
+                'email' => 'uhac@coreproc.ph',
+                'mobile_number' => '09178436703'
             ],
         ];
 
-        foreach ($users as $user) {
-            $user['password'] = bcrypt('hello123');
-            $userModel = User::create($user);
+        $password = 'uhac123';
 
-            $apiKey = ApiKey::make($userModel);
+        foreach ($users as $userInfo) {
+            $user = User::create([
+                'email' => $userInfo['email'],
+                'password' => bcrypt($password)
+            ]);
 
-            $this->command->info('User created for \'' . $user['email'] . '\' with password \'' . $user['password'] . '\' and API_KEY \'' . $apiKey->key . '\'.');
+            $user->userProfile()->create([
+                'first_name' => $userInfo['first_name'],
+                'last_name' => $userInfo['last_name'],
+            ]);
+
+            $user->mobileNumber()->create([
+                'mobile_number' => $userInfo['mobile_number']
+            ]);
+
+            $apiKey = ApiKey::make($user);
+
+            $this->command->info('User created for \'' . $userInfo['email'] . '\' with password \'' . $password . '\' and API_KEY \'' . $apiKey->key . '\'.');
         }
     }
 }

@@ -5,8 +5,7 @@ namespace UHacWeb\Transformers;
 use League\Fractal\TransformerAbstract;
 use UHacWeb\Models\Transaction;
 
-class TransactionTransformer extends TransformerAbstract
-{
+class TransactionTransformer extends TransformerAbstract {
 
     protected $defaultIncludes = [
         'coupon',
@@ -17,12 +16,14 @@ class TransactionTransformer extends TransformerAbstract
     public function transform(Transaction $transaction)
     {
         return [
-            'id'             => $transaction->id,
-            'mobile_number'  => $transaction->mobile_number,
-            'amount'         => $transaction->amount,
-            'status'         => $transaction->status,
-            'remarks'        => $transaction->remarks,
-            'created_at'     => $transaction->created_at,
+            'id'               => $transaction->id,
+            'mobile_number'    => $transaction->mobile_number,
+            'amount'           => $transaction->amount,
+            'status'           => $transaction->status,
+            'remarks'          => @($transaction->remarks) ?: '',
+            'reference_number' => @($transaction->reference_number) ?: '',
+            'confirmation_no'  => @($transaction->confirmation_no) ?: '',
+            'created_at'       => $transaction->created_at,
         ];
     }
 

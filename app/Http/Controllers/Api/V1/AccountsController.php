@@ -32,6 +32,18 @@ class AccountsController extends ApiController
         return $this->response->withItem($account, new AccountTransformer);
     }
 
+    public function show(Request $request, $accountId)
+    {
+        $user = $request->user();
+        $account = $user->accounts()->where('id', $accountId)->first();
+
+        if ( ! $account) {
+            return $this->response->errorNotFound('Account not found.');
+        }
+
+        return $this->response->withItem($account, new AccountTransformer);
+    }
+
     public function update(Request $request, $accountId)
     {
         $user = $request->user();

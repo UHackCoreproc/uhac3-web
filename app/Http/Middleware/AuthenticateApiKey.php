@@ -2,6 +2,7 @@
 
 namespace UHacWeb\Http\Middleware;
 
+use Auth;
 use Closure;
 use UHacWeb\Models\ApiKey;
 use UHacWeb\Models\User;
@@ -19,7 +20,7 @@ class AuthenticateApiKey
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $apiKeyValue = $request->header(config('kitchen.api_key.header', 'X-Authorization'));
+        $apiKeyValue = $request->header('X-Authorization');
 
         $apiKey = ApiKey::where('key', $apiKeyValue)
             ->first();
@@ -31,10 +32,8 @@ class AuthenticateApiKey
         $user = $apiKey->apikeyable;
 
         // Log the user in
-        if ($user instanceof BackendUser) {
-            SentinelBackend::login($user);
-        } elseif ($user instanceof User) {
-            Sentinel::login($user);
+        if ($user instanceof User) {
+            Auth::once($user);
         }
 
         $request->setUserResolver(function () use ($user) {

@@ -3,24 +3,30 @@
 namespace UHacWeb\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use UHacWeb\Models\Mixins\GenerateReferenceNumber;
+use Illuminate\Notifications\Notifiable;
+use UHacWeb\Models\Mixins\GeneratesReferenceNumber;
 
 class Transaction extends Model
 {
-    use GenerateReferenceNumber;
+    use GeneratesReferenceNumber, Notifiable;
 
     protected $fillable = [
-        'user_id',
+        'source_user_id',
         'source_account_id',
         'target_account_id',
+        'target_user_id',
         'target_account_type_id',
-        'type',
         'mobile_number',
         'reference_number',
         'amount',
         'status',
         'remarks',
     ];
+
+    public function coupon()
+    {
+        return $this->hasOne(Coupon::class);
+    }
 
     public function sourceAccount()
     {

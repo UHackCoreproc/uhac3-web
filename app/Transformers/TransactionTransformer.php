@@ -9,6 +9,7 @@ class TransactionTransformer extends TransformerAbstract
 {
 
     protected $defaultIncludes = [
+        'coupon',
         'sourceAccount',
         'targetAccount',
     ];
@@ -23,6 +24,13 @@ class TransactionTransformer extends TransformerAbstract
             'remarks'        => $transaction->remarks,
             'created_at'     => $transaction->created_at,
         ];
+    }
+
+    public function includeCoupon(Transaction $transaction)
+    {
+        if ($transaction->coupon) {
+            return $this->item($transaction->coupon, new CouponTransformer);
+        }
     }
 
     public function includeSourceAccount(Transaction $transaction)

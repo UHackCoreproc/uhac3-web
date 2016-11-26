@@ -36,7 +36,7 @@ class TransactionsController extends ApiController
 
         $transaction = $this->createTransaction($account, $request);
 
-        if ($request->get('account_type_id') == AccountType::CODE_REDEMPTION) {
+        if ($request->get('target_account_type_id') == AccountType::CODE_REDEMPTION) {
             $this->createRedemptionCode($transaction, $request);
         }
 

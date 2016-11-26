@@ -112,7 +112,7 @@ Route::group([
          *
          * */
         $router->resource('accounts', 'AccountsController', [
-            'only' => ['index', 'store', 'show'. 'update', 'destroy'],
+            'only' => ['index', 'store', 'show', 'update', 'destroy'],
             'names' => [
 
                 /*

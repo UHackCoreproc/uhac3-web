@@ -12,6 +12,7 @@ use UHacWeb\Models\Country;
 use UHacWeb\Models\MobileNumber;
 use UHacWeb\Models\User;
 use UHacWeb\Transformers\UserTransformer;
+use Validator;
 
 class AuthController extends ApiController
 {
@@ -50,7 +51,7 @@ class AuthController extends ApiController
             ]));
         }
 
-        $userValidator = \Validator::make($request->all(), (new StoreUserRequest)->rules());
+        $userValidator = Validator::make($request->all(), (new StoreUserRequest)->rules());
 
         // Check if user credentials field are valid
         if ($userValidator->fails()) {

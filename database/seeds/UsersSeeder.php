@@ -50,7 +50,10 @@ class UsersSeeder extends Seeder
                 'first_name' => $userInfo['first_name'],
                 'last_name' => $userInfo['last_name'],
                 'email' => $userInfo['email'],
-                'password' => bcrypt($password)
+                'password' => bcrypt($password),
+                'sex' => 'm',
+                'birthday' => $faker->date,
+                'device_id' => $faker->uuid
             ]);
 
             $defaultAddress = $user->addresses()->create([

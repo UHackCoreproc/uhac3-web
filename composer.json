@@ -1,7 +1,7 @@
 {
     "name": "UHackCoreproc/uhac3-web",
     "description": "U-HAC 3.0",
-    "keywords": ["framework", "laravel", "uhac3", "unionbank"],
+    "keywords": ["framework", "laravel", "uhac3", "unionbank", "ggpay"],
     "license": "MIT",
     "type": "project",
     "require": {

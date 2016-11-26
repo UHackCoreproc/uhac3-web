@@ -39,6 +39,11 @@ class User extends Authenticatable
         'updated_at' => 'string',
     ];
 
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
     public function addresses()
     {
         return $this->morphMany(Address::class, 'addressable');

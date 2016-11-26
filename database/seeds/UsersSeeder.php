@@ -56,8 +56,6 @@ class UsersSeeder extends Seeder
                 'city' => $faker->city,
                 'state' => $faker->state,
                 'zip_code' => $faker->postcode,
-                'addressable_type' => get_class($user),
-                'addressable_id' => $user->id,
                 'country_id' => Country::PHILIPPINES
             ]);
 

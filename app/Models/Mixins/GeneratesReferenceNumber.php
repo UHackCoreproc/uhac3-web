@@ -7,7 +7,7 @@ trait GeneratesReferenceNumber
     public static function bootGeneratesReferenceNumber()
     {
         static::creating(function ($model) {
-            $model->reference_number = $model->generatesReferenceNumber();
+            $model->reference_number = $model->generateReferenceNumber();
         });
     }
 

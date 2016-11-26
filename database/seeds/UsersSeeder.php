@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use UHacWeb\Models\ApiKey;
 use UHacWeb\Models\Country;
 use UHacWeb\Models\User;
+use UHacWeb\Models\AccountType;
 
 class UsersSeeder extends Seeder
 {
@@ -66,6 +67,13 @@ class UsersSeeder extends Seeder
 
             $user->mobileNumber()->create([
                 'mobile_number' => $userInfo['mobile_number']
+            ]);
+
+            $user->accounts()->create([
+                'title' => $faker->creditCardType,
+                'description' => $faker->text,
+                'account_type_id' => AccountType::orderByRaw('RAND()')->limit(1)->first()->id,
+                'account_number' => $faker->creditCardNumber,
             ]);
 
             $apiKey = ApiKey::make($user);

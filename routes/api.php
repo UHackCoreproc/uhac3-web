@@ -75,4 +75,51 @@ Route::group([
 
     });
 
+    /*
+     * GROUP
+     * prefix api/v1/accounts/
+     * as api.accounts
+     * */
+    $router->group([
+        'middleware' => 'auth.apikey',
+    ], function(Router $router) {
+
+        $router->resource('accounts', 'AccountsController', [
+            'only' => ['index', 'store', 'update', 'destroy'],
+            'names' => [
+                /*
+                 * GET
+                 * prefix api/v1/accounts/
+                 * as api.accounts.index
+                 *
+                 * */
+                'index' => 'accounts.index',
+                /*
+                 * POST
+                 * prefix api/v1/accounts/
+                 * as api.accounts.store
+                 *
+                 * */
+                'store' => 'accounts.store',
+
+                /*
+                 * PATCH/PUT
+                 * prefix api/v1/accounts/{$account}
+                 * as api.accounts.update
+                 *
+                 * */
+                'update' => 'accounts.update',
+
+                /*
+                 * DELETE
+                 * prefix api/v1/accounts/{$account}
+                 * as api.accounts.destroy
+                 *
+                 * */
+                'destroy' => 'accounts.destroy',
+            ]
+        ]);
+
+    });
+
 });

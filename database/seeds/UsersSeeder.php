@@ -46,6 +46,8 @@ class UsersSeeder extends Seeder
 
         foreach ($users as $userInfo) {
             $user = User::create([
+                'first_name' => $userInfo['first_name'],
+                'last_name' => $userInfo['last_name'],
                 'email' => $userInfo['email'],
                 'password' => bcrypt($password)
             ]);
@@ -59,11 +61,8 @@ class UsersSeeder extends Seeder
                 'country_id' => Country::PHILIPPINES
             ]);
 
-            $user->userProfile()->create([
-                'first_name' => $userInfo['first_name'],
-                'last_name' => $userInfo['last_name'],
-                'default_address_id' => $defaultAddress->id
-            ]);
+            $user->default_address_id = $defaultAddress->id;
+            $user->save();
 
             $user->mobileNumber()->create([
                 'mobile_number' => $userInfo['mobile_number']

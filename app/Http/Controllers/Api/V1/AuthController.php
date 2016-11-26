@@ -59,6 +59,8 @@ class AuthController extends ApiController
         }
 
         $user = User::create([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
             'email' => $request->get('email'),
             'password' => bcrypt($request->get('email'))
         ]);
@@ -77,12 +79,8 @@ class AuthController extends ApiController
             'country_id' => isset($country->id) ? $country->id : null
         ]);
 
-        // Create user profile
-        $user->userProfile()->create([
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
-            'default_address_id' => $address->id
-        ]);
+        $user->default_address_id = $address->id;
+        $user->save();
 
         // Bind created user to verified mobile number
         $mobileNumber->user = $user;

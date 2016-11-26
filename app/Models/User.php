@@ -15,7 +15,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'default_address_id'
     ];
 
     /**
@@ -24,7 +28,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'created_at' => 'string',
+        'updated_at' => 'string',
     ];
 
     public function addresses()
@@ -32,13 +42,13 @@ class User extends Authenticatable
         return $this->morphMany(Address::class, 'addressable');
     }
 
+    public function defaultAddress()
+    {
+        return $this->hasOne(Address::class, 'id', 'default_address_id');
+    }
+
     public function mobileNumber()
     {
         return $this->hasOne(MobileNumber::class);
-    }
-
-    public function userProfile()
-    {
-        return $this->hasOne(UserProfile::class);
     }
 }

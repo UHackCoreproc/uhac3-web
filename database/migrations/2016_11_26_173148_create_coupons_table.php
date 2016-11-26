@@ -22,7 +22,7 @@ class CreateCouponsTable extends Migration {
             $table->dateTime('claimed_at');
             $table->timestamps();
 
-            $table->foreign('transaction_id')->references('id')->on('transactions');
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('set null');;
         });
     }
 
@@ -33,6 +33,6 @@ class CreateCouponsTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('coupons');
     }
 }

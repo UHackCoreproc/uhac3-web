@@ -33,7 +33,7 @@ class AuthenticateApiKey
 
         // Log the user in
         if ($user instanceof User) {
-            Auth::once($user);
+            Auth::login($user);
         }
 
         $request->setUserResolver(function () use ($user) {

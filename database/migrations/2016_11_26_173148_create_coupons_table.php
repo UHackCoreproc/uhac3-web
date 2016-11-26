@@ -18,7 +18,7 @@ class CreateCouponsTable extends Migration {
             $table->string('recipient_contact_no')->index();
             $table->string('sender_contact_no')->index();
             $table->decimal('amount', 19, 4);
-            $table->integer('transaction_id', false, true);
+            $table->integer('transaction_id', false, true)->nullable();
             $table->dateTime('claimed_at');
             $table->timestamps();
 

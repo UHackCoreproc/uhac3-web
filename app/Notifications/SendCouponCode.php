@@ -51,6 +51,6 @@ class SendCouponCode extends Notification
 
     public function toChikkaSms($notifiable)
     {
-        return "CODE: \"{$this->coupon->code}\".\n\nPlease redeem to the nearest " . config('app.name') . " merchant. This coupon will expire within 24 hours.";
+        return "Your coupon code is: \"{$this->coupon->code}\".\n\nPlease redeem to the nearest " . config('app.name') . " merchant.";
     }
 }

@@ -10,7 +10,13 @@ class UserProfile extends Model
         'user_id',
         'first_name',
         'last_name',
+        'default_address_id'
     ];
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(Address::class, 'id', 'default_address_id');
+    }
 
     public function user()
     {

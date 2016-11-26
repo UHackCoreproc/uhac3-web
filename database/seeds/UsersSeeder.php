@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use UHacWeb\Models\ApiKey;
+use UHacWeb\Models\Country;
 use UHacWeb\Models\User;
 
 class UsersSeeder extends Seeder
@@ -40,6 +41,7 @@ class UsersSeeder extends Seeder
             ],
         ];
 
+        $faker = Faker\Factory::create();
         $password = 'uhac123';
 
         foreach ($users as $userInfo) {
@@ -48,9 +50,21 @@ class UsersSeeder extends Seeder
                 'password' => bcrypt($password)
             ]);
 
+            $defaultAddress = $user->addresses()->create([
+                'label' => 'Default',
+                'address_1' => $faker->streetAddress,
+                'city' => $faker->city,
+                'state' => $faker->state,
+                'zip_code' => $faker->postcode,
+                'addressable_type' => get_class($user),
+                'addressable_id' => $user->id,
+                'country_id' => Country::PHILIPPINES
+            ]);
+
             $user->userProfile()->create([
                 'first_name' => $userInfo['first_name'],
                 'last_name' => $userInfo['last_name'],
+                'default_address_id' => $defaultAddress->id
             ]);
 
             $user->mobileNumber()->create([

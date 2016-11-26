@@ -18,9 +18,11 @@ class CreateUserProfilesTable extends Migration
             $table->integer('user_id', false, true)->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->integer('default_address_id', false, true)->nullable();
             $table->nullableTimestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('default_address_id')->references('id')->on('addresses')->onDelete('set null');
         });
     }
 

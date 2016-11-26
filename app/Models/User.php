@@ -27,6 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
+
     public function mobileNumber()
     {
         return $this->hasOne(MobileNumber::class);

@@ -4,11 +4,18 @@ namespace UHacWeb\Http\Middleware;
 
 use Auth;
 use Closure;
+use EllipseSynergie\ApiResponse\Contracts\Response;
 use UHacWeb\Models\ApiKey;
 use UHacWeb\Models\User;
 
 class AuthenticateApiKey
 {
+    protected $response;
+
+    public function __construct(Response $response)
+    {
+        $this->response = $response;
+    }
 
     /**
      * Handle an incoming request.
@@ -26,7 +33,7 @@ class AuthenticateApiKey
             ->first();
 
         if (empty($apiKey)) {
-            return $this->unauthorizedResponse();
+            return $this->response->errorUnauthorized('Invalid API key.');
         }
 
         $user = $apiKey->apikeyable;
@@ -41,13 +48,6 @@ class AuthenticateApiKey
         });
 
         return $next($request);
-    }
-
-    private function unauthorizedResponse()
-    {
-        return response([
-            'error' => 401,
-        ], 401);
     }
 
 }

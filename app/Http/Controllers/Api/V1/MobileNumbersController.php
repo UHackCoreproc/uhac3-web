@@ -25,7 +25,9 @@ class MobileNumbersController extends ApiController
         ]);
 
         if ($mobileNumber->exists && $mobileNumber->user) {
-            return $this->response->errorWrongArgs(new MessageBag(['user' => 'Mobile number provided is already used by another user.']));
+            return $this->response->errorWrongArgs(new MessageBag([
+                'user' => 'Mobile number provided is already used by another user.'
+            ]));
         }
 
         $mobileNumber->save();

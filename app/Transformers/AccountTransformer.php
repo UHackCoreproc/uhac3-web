@@ -14,12 +14,23 @@ class AccountTransformer extends TransformerAbstract
 
     public function transform(Account $account)
     {
-        return [
+         $accountTransform = [
             'id'              => $account->id,
             'title'           => $account->title,
             'description'     => $account->description,
             'account_number'  => $account->account_number,
-        ];
+         ];
+
+        if ($account->paymaya_customer_id && $account->paymaya_card_id) {
+            $accountTransform['paymaya_customer_id'] = $account->paymaya_customer_id;
+            $accountTransform['paymaya_card_id'] = $account->paymaya_card_id;
+            $accountTransform['paymaya_is_verified'] = $account->paymaya_is_verified;
+            $accountTransform['paymaya_verify_url'] = $account->paymaya_verify_url;
+            $accountTransform['paymaya_card_type'] = $account->paymaya_card_type;
+            $accountTransform['paymaya_card_mask'] = $account->paymaya_card_mask;
+        }
+
+        return $accountTransform;
     }
 
     public function includeAccountType(Account $account)

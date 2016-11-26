@@ -24,8 +24,8 @@ class StoreUpdateAccountRequest extends FormRequest
     public function rules()
     {
         return [
-            'account_number' => 'required',
-            'account_type_id' => 'required',
+            'account_number' => 'required|unique:accounts',
+            'account_type' => 'required',
         ];
     }
 }

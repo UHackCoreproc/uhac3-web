@@ -13,6 +13,12 @@ class Account extends Model
         'account_number',
         'title',
         'description',
+        'paymaya_customer_id',
+        'paymaya_card_id',
+        'paymaya_is_verified',
+        'paymaya_verify_url',
+        'paymaya_card_type',
+        'paymaya_card_mask',
     ];
 
     public function accountType()

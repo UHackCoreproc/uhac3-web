@@ -112,7 +112,7 @@ Route::group([
          *
          * */
         $router->resource('accounts', 'AccountsController', [
-            'only' => ['index', 'store', 'update', 'destroy'],
+            'only' => ['index', 'store', 'show'. 'update', 'destroy'],
             'names' => [
 
                 /*
@@ -130,6 +130,14 @@ Route::group([
                  *
                  * */
                 'store' => 'accounts.store',
+
+                /*
+                 * GET
+                 * prefix api/v1/accounts/{$account}
+                 * as api.accounts.show
+                 *
+                 * */
+                'show' => 'accounts.show',
 
                 /*
                  * PATCH/PUT

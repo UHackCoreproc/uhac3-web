@@ -15,6 +15,7 @@ class AddressTransformer extends TransformerAbstract
     public function transform(Address $address)
     {
         return [
+            'id'    => $address->id,
             'label' => $address->label,
             'address_1' => $address->address_1,
             'address_2' => $address->address_2,

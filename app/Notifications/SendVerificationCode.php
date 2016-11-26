@@ -39,6 +39,6 @@ class SendVerificationCode extends Notification
 
     public function toChikkaSms($notifiable)
     {
-        return "Your verification code is: \"{$notifiable->verification_code}\".\n\nClose this message and enter the code into " . config('app.name') . " to proceed with registration.";
+        return "Your verification code is: \"{$notifiable->verification_code}\".\n\nggPay";
     }
 }

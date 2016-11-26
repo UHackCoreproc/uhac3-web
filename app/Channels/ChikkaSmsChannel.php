@@ -22,7 +22,8 @@ class ChikkaSmsChannel
     {
         $message = $notification->toChikkaSms($notifiable);
 
-        $chikkaClient = new ChikkaClient(env('CHIKKA_CLIENT_ID'), env('CHIKKA_SECRET_KEY'), env('CHIKKA_SHORT_CODE'));
+        $chikkaClient = new ChikkaClient(
+            config('ggpay.apis.chikka.client_id'), config('ggpay.apis.chikka.secret_key'), config('ggpay.apis.chikka.short_code'));
 
         $sms = new Sms(Carbon::now()->timestamp, $notifiable->mobile_number, $message);
 

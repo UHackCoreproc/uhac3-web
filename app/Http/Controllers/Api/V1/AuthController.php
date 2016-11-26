@@ -8,6 +8,7 @@ use Illuminate\Support\MessageBag;
 use UHacWeb\Http\Controllers\Api\ApiController;
 use UHacWeb\Http\Requests\StoreUserRequest;
 use UHacWeb\Models\ApiKey;
+use UHacWeb\Models\Country;
 use UHacWeb\Models\MobileNumber;
 use UHacWeb\Models\User;
 use UHacWeb\Transformers\UserTransformer;
@@ -61,6 +62,9 @@ class AuthController extends ApiController
             'password' => bcrypt($request->get('email'))
         ]);
 
+        // Find Country
+        $country = Country::where('name', 'like', "%{$request->get('country')}%")->first();
+
         // Create address
         $address = $user->addresses()->create([
             'label' => 'Default',
@@ -69,7 +73,7 @@ class AuthController extends ApiController
             'city' => $request->get('city'),
             'state' => $request->get('state'),
             'zip_code' => $request->get('zip_code'),
-            'country_id' => $request->get('country')
+            'country_id' => isset($country->id) ? $country->id : null
         ]);
 
         // Create user profile

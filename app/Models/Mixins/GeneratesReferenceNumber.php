@@ -2,12 +2,12 @@
 
 namespace UHacWeb\Models\Mixins;
 
-trait GenerateReferenceNumber
+trait GeneratesReferenceNumber
 {
-    public static function bootGenerateReferenceNumber()
+    public static function bootGeneratesReferenceNumber()
     {
         static::creating(function ($model) {
-            $model->reference_number = $model->generateReferenceNumber();
+            $model->reference_number = $model->generatesReferenceNumber();
         });
     }
 

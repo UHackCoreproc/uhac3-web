@@ -41,4 +41,27 @@ Route::group([
 
     });
 
+    /*
+     * GROUP
+     * prefix api/v1/mobile-number/
+     * as api.mobile-number
+     * */
+    $router->group([
+        'prefix' => 'mobile-number',
+        'as' => 'mobile-number.'
+    ], function(Router $router) {
+
+        /*
+         * POST
+         * prefix api/v1/mobile-number/verify
+         * as api.mobile-number.verify
+         *
+         * */
+        $router->post('verify',[
+            'as' => 'verify',
+            'uses' => 'MobileNumbersController@verify'
+        ]);
+
+    });
+
 });

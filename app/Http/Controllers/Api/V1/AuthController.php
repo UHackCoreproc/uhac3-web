@@ -4,8 +4,12 @@ namespace UHacWeb\Http\Controllers\Api\V1;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 use UHacWeb\Http\Controllers\Api\ApiController;
+use UHacWeb\Http\Requests\StoreUserRequest;
 use UHacWeb\Models\ApiKey;
+use UHacWeb\Models\MobileNumber;
+use UHacWeb\Models\User;
 use UHacWeb\Transformers\UserTransformer;
 
 class AuthController extends ApiController
@@ -31,5 +35,59 @@ class AuthController extends ApiController
         }
 
         return $this->response->errorUnauthorized('Invalid credentials.');
+    }
+
+    public function register(Request $request)
+    {
+        $mobileNumber = MobileNumber::where('mobile_number', $request->get('mobile_number'))
+            ->where('verification_code', $request->get('mobile_number'))->first();
+
+        // Check if mobile number and verification code are updated
+        if ( ! $mobileNumber) {
+            return $this->response->errorWrongArgs(new MessageBag([
+                'mobile_number' => 'Mobile number and verification code mismatch.'
+            ]));
+        }
+
+        $userValidator = \Validator::make($request->all(), (new StoreUserRequest)->rules());
+
+        // Check if user credentials field are valid
+        if ($userValidator->fails()) {
+            return $this->response->errorWrongArgs($userValidator->getMessageBag());
+        }
+
+        $user = User::create([
+            'email' => $request->get('email'),
+            'password' => bcrypt($request->get('email'))
+        ]);
+
+        // Create address
+        $address = $user->addresses()->create([
+            'label' => 'Default',
+            'address_1' => $request->get('address_1'),
+            'address_2' => $request->get('address_2'),
+            'city' => $request->get('city'),
+            'state' => $request->get('state'),
+            'zip_code' => $request->get('zip_code'),
+            'country_id' => $request->get('country')
+        ]);
+
+        // Create user profile
+        $user->userProfile()->create([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'default_address_id' => $address->id
+        ]);
+
+        // Bind created user to verified mobile number
+        $mobileNumber->user = $user;
+        $mobileNumber->save();
+
+        // Create API key for created user
+        $apiKey = ApiKey::make($user);
+
+        return $this->response->withItem($user, new UserTransformer, null, [], [
+            'X-Authorization' => $apiKey->key
+        ]);
     }
 }

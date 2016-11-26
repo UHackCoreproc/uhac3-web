@@ -39,6 +39,17 @@ Route::group([
             'uses' => 'AuthController@login'
         ]);
 
+        /*
+         * POST
+         * prefix api/v1/auth/register
+         * as api.auth.register
+         *
+         * */
+        $router->post('register',[
+            'as' => 'register',
+            'uses' => 'AuthController@register'
+        ]);
+
     });
 
     /*

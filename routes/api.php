@@ -84,9 +84,37 @@ Route::group([
         'middleware' => 'auth.apikey',
     ], function(Router $router) {
 
+        /*
+         * GET
+         * prefix api/v1/transactions/
+         * as api.transactions
+         *
+         * */
+        $router->get('transactions', [
+            'as' => 'transactions',
+            'uses' => 'TransactionsController@index'
+        ]);
+
+        /*
+         * GET
+         * prefix api/v1/accounts/{$account}/transactions
+         * as api.accounts.transactions
+         *
+         * */
+        $router->get('accounts/{$account}/transactions', [
+            'as' => 'accounts.transactions',
+            'uses' => 'TransactionsController@index'
+        ]);
+
+        /*
+         * RESOURCE
+         * model $account
+         *
+         * */
         $router->resource('accounts', 'AccountsController', [
             'only' => ['index', 'store', 'update', 'destroy'],
             'names' => [
+
                 /*
                  * GET
                  * prefix api/v1/accounts/
@@ -94,6 +122,7 @@ Route::group([
                  *
                  * */
                 'index' => 'accounts.index',
+
                 /*
                  * POST
                  * prefix api/v1/accounts/

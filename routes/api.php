@@ -97,6 +97,17 @@ Route::group([
 
         /*
          * POST
+         * prefix api/v1/accounts/get-by-mobile-number
+         * as api.accounts.get-by-mobile-number
+         *
+         * */
+        $router->post('accounts/get-by-mobile-number', [
+            'as' => 'accounts.get-by-mobile-number',
+            'uses' => 'AccountsController@show'
+        ]);
+
+        /*
+         * POST
          * prefix api/v1/redeem-code/
          * as api.redeem-code
          *
@@ -140,7 +151,7 @@ Route::group([
          *
          * */
         $router->resource('accounts', 'AccountsController', [
-            'only' => ['index', 'store', 'show', 'update', 'destroy'],
+            'only' => ['index', 'store', 'update', 'destroy'],
             'names' => [
 
                 /*
@@ -158,14 +169,6 @@ Route::group([
                  *
                  * */
                 'store' => 'accounts.store',
-
-                /*
-                 * GET
-                 * prefix api/v1/accounts/{$account}
-                 * as api.accounts.show
-                 *
-                 * */
-                'show' => 'accounts.show',
 
                 /*
                  * PATCH/PUT

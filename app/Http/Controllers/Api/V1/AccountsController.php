@@ -7,6 +7,7 @@ use Illuminate\Support\MessageBag;
 use UHacWeb\Http\Controllers\Api\ApiController;
 use UHacWeb\Http\Requests\StoreUpdateAccountRequest;
 use UHacWeb\Models\AccountType;
+use UHacWeb\Models\MobileNumber;
 use UHacWeb\Processors\PaymayaProcessor;
 use UHacWeb\Transformers\AccountTransformer;
 use Validator;
@@ -109,16 +110,17 @@ class AccountsController extends ApiController
         ];
     }
 
-    public function show(Request $request, $accountId)
+    public function show(Request $request)
     {
-        $user = $request->user();
-        $account = $user->accounts()->where('id', $accountId)->first();
+        $mobileNumber = MobileNumber::where('mobile_number', $request->get('mobile_number'))->first();
 
-        if ( ! $account) {
-            return $this->response->errorNotFound('Account not found.');
+        if ( ! $mobileNumber) {
+            return $this->response->errorNotFound('Mobile number not found.');
         }
 
-        return $this->response->withItem($account, new AccountTransformer);
+        $accounts = $mobileNumber->user->accounts;
+
+        return $this->response->withCollection($accounts, new AccountTransformer);
     }
 
     public function update(Request $request, $accountId)

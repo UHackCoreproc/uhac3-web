@@ -37,11 +37,11 @@ class UnionBankAccountProcessor {
         }
 
         return [
-            'status'            => $r->status,
-            'account_name'      => $r->account_name,
-            'currency'          => $r->currency,
-            'available_balance' => $r->available_balance,
-            'current_balance'   => $r->current_balance
+            'status'            => $r[0]->status,
+            'account_name'      => $r[0]->account_name,
+            'currency'          => $r[0]->currency,
+            'available_balance' => $r[0]->avaiable_balance,
+            'current_balance'   => $r[0]->current_balance
         ];
     }
 

@@ -95,6 +95,17 @@ Route::group([
             'uses' => 'TransactionsController@index'
         ]);
 
+        /*
+         * POST
+         * prefix api/v1/redeem-code/
+         * as api.redeem-code
+         *
+         * */
+        $router->post('redeem-code', [
+            'as' => 'redeem-code',
+            'uses' => 'TransactionsController@redeemCode'
+        ]);
+
         $router->group([
             'prefix' => 'accounts/{account}'
         ], function (Router $router) {

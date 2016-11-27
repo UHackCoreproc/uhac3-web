@@ -61,6 +61,9 @@ class AuthController extends ApiController
         $user = User::create([
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),
+            'sex' => $request->get('sex'),
+            'birthdate' => $request->get('birthdate'),
+            'device_id' => $request->get('device_id'),
             'email' => $request->get('email'),
             'password' => bcrypt($request->get('email'))
         ]);

@@ -75,7 +75,7 @@ class UsersSeeder extends Seeder
             $user->accounts()->create([
                 'title' => $faker->creditCardType,
                 'description' => $faker->text,
-                'account_type_id' => AccountType::orderByRaw('RAND()')->limit(1)->first()->id,
+                'account_type_id' => random_int(1,2),
                 'account_number' => $faker->creditCardNumber,
             ]);
 

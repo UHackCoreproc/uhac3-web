@@ -21,7 +21,7 @@ class TransactionsController extends ApiController
         $user = $request->user();
         $transactions = $user->transactions();
 
-        if ( ! $accountId) {
+        if ($accountId) {
             $transactions->where('source_account_id', $accountId);
         }
 

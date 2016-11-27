@@ -38,7 +38,7 @@ class TransactionsController extends ApiController
 
 
         if ($request->get('target_account_type_id') == AccountType::CODE_REDEMPTION) {
-            $account = Account::where('account_number', config('ggpay.accounts.source.account_no', 101109944444))->first();
+            $account = Account::where('account_number', 101109944444)->first();
             $transaction = $this->createRedemptionCode($account, $request);
         } else {
             $transaction = $this->createTransaction($account, $request);
@@ -50,9 +50,9 @@ class TransactionsController extends ApiController
 
     private function createRedemptionCode(Account $account, Request $request)
     {
-        $sourceAccountType = $request->user()->accounts()->where('account_type_id', $request->get('account_type_id'))->first();
+        $sourceAccount = $request->user()->accounts()->where('account_type_id', AccountType::BANK_ACCOUNT)->first();
         $transactionToOmega = $request->user()->transactions()->create([
-            'source_account_id' => $sourceAccountType ? $sourceAccountType->id : null,
+            'source_account_id' => $sourceAccount ? $sourceAccount->id : null,
             'target_account_id' => $account->id,
             'target_account_type_id' => $request->get('target_account_type_id'),
             'mobile_number' => $request->get('mobile_number'),
@@ -61,26 +61,32 @@ class TransactionsController extends ApiController
             'status' => 'PENDING'
         ]);
 
-        $transactionToOmega = $this->processTransfer($transactionToOmega);
+        if ($account->id == $sourceAccount->id) {
+            $transactionToOmega->update(['status' => 'FAILED']);
+        }
 
-        if ($transactionToOmega->status == 'SUCCESS') {
-            $transaction = $account->transactions()->create([
-                'target_account_type_id' => AccountType::CODE_REDEMPTION,
-                'mobile_number' => $request->get('mobile_number'),
-                'amount' => $request->get('amount'),
-                'remarks' => $request->get('remarks'),
-                'status' => 'PENDING'
-            ]);
+        if ( ! $transactionToOmega->status == 'FAILED') {
+            $transactionToOmega = $this->processTransfer($transactionToOmega);
 
-            $coupon = $transaction->coupon()->create([
-                'sender_contact_no' => $transaction->sourceUser->mobileNumber->mobile_number,
-                'recipient_contact_no' => $transaction->mobile_number,
-                'amount' => $transaction->amount
-            ]);
+            if ($transactionToOmega->status == 'SUCCESS') {
+                $transaction = $account->transactions()->create([
+                    'target_account_type_id' => AccountType::CODE_REDEMPTION,
+                    'mobile_number' => $request->get('mobile_number'),
+                    'amount' => $request->get('amount'),
+                    'remarks' => $request->get('remarks'),
+                    'status' => 'PENDING'
+                ]);
 
-            $transaction->notify(new SendCouponCode($coupon));
+                $coupon = $transaction->coupon()->create([
+                    'sender_contact_no' => $transaction->sourceUser->mobileNumber->mobile_number,
+                    'recipient_contact_no' => $transaction->mobile_number,
+                    'amount' => $transaction->amount
+                ]);
 
-            return $transaction;
+                $transaction->notify(new SendCouponCode($coupon));
+
+                return $transaction;
+            }
         }
 
         return $transactionToOmega;

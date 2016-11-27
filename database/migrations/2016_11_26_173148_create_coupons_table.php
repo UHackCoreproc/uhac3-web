@@ -19,7 +19,7 @@ class CreateCouponsTable extends Migration {
             $table->string('sender_contact_no')->index();
             $table->decimal('amount', 19, 4);
             $table->integer('transaction_id', false, true)->nullable();
-            $table->dateTime('claimed_at');
+            $table->dateTime('claimed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('set null');;

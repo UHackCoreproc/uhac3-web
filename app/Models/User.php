@@ -68,7 +68,7 @@ class User extends Authenticatable
         return $this->hasOne(MobileNumber::class);
     }
 
-    public function transaction()
+    public function transactions()
     {
         return $this->hasMany(Transaction::class);
     }

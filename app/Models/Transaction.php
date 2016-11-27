@@ -23,6 +23,10 @@ class Transaction extends Model
         'remarks',
     ];
 
+    protected $casts = [
+        'created_at' => 'string'
+    ];
+
     public function coupon()
     {
         return $this->hasOne(Coupon::class);
@@ -30,21 +34,26 @@ class Transaction extends Model
 
     public function sourceAccount()
     {
-        return $this->belongsTo(Account::class, 'id', 'source_account_id');
+        return $this->belongsTo(Account::class, 'source_account_id');
+    }
+
+    public function sourceUser()
+    {
+        return $this->belongsTo(User::class, 'source_user_id');
     }
 
     public function targetAccount()
     {
-        return $this->belongsTo(Account::class, 'id', 'target_account_id');
+        return $this->belongsTo(Account::class, 'target_account_id');
     }
 
     public function targetAccountType()
     {
-        return $this->belongsTo(AccountType::class, 'id', 'target_account_type_id');
+        return $this->belongsTo(AccountType::class, 'target_account_type_id');
     }
 
-    public function user()
+    public function targetUser()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'target_user_id');
     }
 }

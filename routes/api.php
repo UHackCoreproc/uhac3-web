@@ -95,16 +95,33 @@ Route::group([
             'uses' => 'TransactionsController@index'
         ]);
 
-        /*
-         * GET
-         * prefix api/v1/accounts/{$account}/transactions
-         * as api.accounts.transactions
-         *
-         * */
-        $router->get('accounts/{$account}/transactions', [
-            'as' => 'accounts.transactions',
-            'uses' => 'TransactionsController@index'
-        ]);
+        $router->group([
+            'prefix' => 'accounts/{account}'
+        ], function (Router $router) {
+
+            /*
+             * GET
+             * prefix api/v1/accounts/{$account}/transactions
+             * as api.accounts.transactions
+             *
+             * */
+            $router->get('transactions', [
+                'as' => 'accounts.transactions',
+                'uses' => 'TransactionsController@index'
+            ]);
+
+            /*
+             * POST
+             * prefix api/v1/accounts/{$account}/transactions/make
+             * as api.accounts.transactions.make
+             *
+             * */
+            $router->post('transactions/make', [
+                'as' => 'accounts.transactions.make',
+                'uses' => 'TransactionsController@makeTransaction'
+            ]);
+
+        });
 
         /*
          * RESOURCE

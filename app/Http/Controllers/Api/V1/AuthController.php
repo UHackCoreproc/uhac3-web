@@ -42,7 +42,7 @@ class AuthController extends ApiController
     public function register(Request $request)
     {
         $mobileNumber = MobileNumber::where('mobile_number', $request->get('mobile_number'))
-            ->where('verification_code', $request->get('mobile_number'))->first();
+            ->where('verification_code', $request->get('code'))->first();
 
         // Check if mobile number and verification code are updated
         if ( ! $mobileNumber) {
@@ -90,7 +90,7 @@ class AuthController extends ApiController
         $user->save();
 
         // Bind created user to verified mobile number
-        $mobileNumber->user = $user;
+        $mobileNumber->user_id = $user->id;
         $mobileNumber->save();
 
         // Create API key for created user
